@@ -139,7 +139,7 @@ enum { MACRO_VERSION_INFO,
   *
   */
 
-enum { PRIMARY, NUMPAD, FUNCTION }; // layers
+enum { PDVORAK, NUMPAD, FUNCTION }; // layers
 
 
 /* This comment temporarily turns off astyle's indent enforcement
@@ -149,20 +149,51 @@ enum { PRIMARY, NUMPAD, FUNCTION }; // layers
 
 KEYMAPS(
 
-  [PRIMARY] = KEYMAP_STACKED
-  (___,          Key_1,         Key_2,     Key_3,      Key_4, Key_5, Key_LEDEffectNext,
-   Key_Backtick, Key_Quote,     Key_Comma, Key_Period, Key_P, Key_Y, Key_Tab,
-   Key_PageUp,   Key_A,         Key_O,     Key_E,      Key_U, Key_I,
-   Key_PageDown, Key_Semicolon, Key_Q,     Key_J,      Key_K, Key_X, Key_Escape,
-   Key_LeftControl, Key_Backspace, Key_Enter, Key_LeftShift,
+  // [PRIMARY] = KEYMAP_STACKED
+  // (___,          Key_1,         Key_2,     Key_3,      Key_4, Key_5, Key_LEDEffectNext,
+  //  Key_Backtick, Key_Quote,     Key_Comma, Key_Period, Key_P, Key_Y, Key_Tab,
+  //  Key_PageUp,   Key_A,         Key_O,     Key_E,      Key_U, Key_I,
+  //  Key_PageDown, Key_Semicolon, Key_Q,     Key_J,      Key_K, Key_X, Key_Escape,
+  //  Key_LeftControl, Key_Backspace, Key_Enter, Key_LeftShift,
+  //  ShiftToLayer(FUNCTION),
+
+  //  M(MACRO_ANY),   Key_6, Key_7, Key_8, Key_9, Key_0, LockLayer(NUMPAD),
+  //  Key_Enter,      Key_F, Key_G, Key_C, Key_R, Key_L, Key_Slash,
+  //                  Key_D, Key_H, Key_T, Key_N, Key_S, Key_Minus,
+  //  Key_RightAlt,   Key_B, Key_M, Key_W, Key_V, Key_Z, Key_Equals,
+  //  Key_RightShift, Key_Tab, Key_Spacebar, Key_RightControl,
+  //  ShiftToLayer(FUNCTION)),
+  [PDVORAK] = KEYMAP_STACKED
+  (___,             Key_LeftBracket, LSHIFT(Key_LeftBracket), LSHIFT(Key_RightBracket), LSHIFT(Key_9), Key_Equals, Key_LEDEffectNext,
+   LSHIFT(Key_7),   Key_Semicolon,   Key_Comma,               Key_Period,               Key_P,         Key_Y,      Key_Tab,
+   LSHIFT(Key_4),   Key_A,           Key_O,                   Key_E,                    Key_U,         Key_I,
+   Key_Backslash,   Key_Quote,       Key_Q,                   Key_J,                    Key_K,         Key_X,      Key_Escape,
+   Key_LeftShift,   Key_Backspace,   Key_Tab,                 Key_LeftShift,
    ShiftToLayer(FUNCTION),
 
-   M(MACRO_ANY),   Key_6, Key_7, Key_8, Key_9, Key_0, LockLayer(NUMPAD),
-   Key_Enter,      Key_F, Key_G, Key_C, Key_R, Key_L, Key_Slash,
-                   Key_D, Key_H, Key_T, Key_N, Key_S, Key_Minus,
-   Key_RightAlt,   Key_B, Key_M, Key_W, Key_V, Key_Z, Key_Equals,
-   Key_RightShift, Key_Tab, Key_Spacebar, Key_RightControl,
+   M(MACRO_ANY),    LSHIFT(Key_8), LSHIFT(Key_0), LSHIFT(Key_Equals), Key_RightBracket, LSHIFT(Key_1), LSHIFT(Key_3),
+   Key_Enter,       Key_F,         Key_G,         Key_C,              Key_R,            Key_L,         Key_Slash,
+                    Key_D,         Key_H,         Key_T,              Key_N,            Key_S,         Key_Minus,
+   Key_RightAlt,    Key_B,         Key_M,         Key_W,              Key_V,            Key_Z,         LSHIFT(Key_2),
+   Key_LeftControl, Key_Enter,     Key_Spacebar,  Key_LeftControl,
    ShiftToLayer(FUNCTION)),
+
+  // // Programmer Dvorak overrides the behavior of a number of keys when shift is
+  // // held. The ModifierLayers plugin allows us to specify this as a keymap.
+  // [PDVORAK_SHIFT] = KEYMAP_STACKED
+  // (___,                  Key_7, Key_5, Key_3, Key_1, Key_9, ___,
+  //  LSHIFT(Key_5),        ___, ___, ___, ___, ___, ___,
+  //  LSHIFT(Key_Backtick), ___, ___, ___, ___, ___,
+  //  ___,                  ___, ___, ___, ___, ___, ___,
+  //  ___,                  ___, ___, ___,
+  //  ___,
+
+  //  ___, Key_0, Key_2, Key_4, Key_6, Key_8, Key_Backtick,
+  //  ___, ___, ___, ___, ___, ___, ___,
+  //       ___, ___, ___, ___, ___, ___,
+  //  ___, ___, ___, ___, ___, ___, LSHIFT(Key_6),
+  //  ___, ___, ___, ___,
+  //  ___),
 
   [NUMPAD] =  KEYMAP_STACKED
   (___, ___, ___, ___, ___, ___, ___,
