@@ -42,8 +42,8 @@
 // Support for an LED mode that lets one configure per-layer color maps
 #include "Kaleidoscope-Colormap.h"
 
-// Support for Keyboardio's internal keyboard testing mode
-#include "Kaleidoscope-Model01-TestMode.h"
+// // Support for Keyboardio's internal keyboard testing mode
+// #include "Kaleidoscope-Model01-TestMode.h"
 
 // Support for host power management (suspend & wakeup)
 #include "Kaleidoscope-HostPowerManagement.h"
@@ -58,6 +58,8 @@
 // #include <Kaleidoscope-ModifierLayers.h> # keep this here as a reminder since nicer than shapeshift IMO (but was buggy)
 #include <Kaleidoscope-ShapeShifter.h>
 #include <Kaleidoscope-Qukeys.h>
+#include <Kaleidoscope-Heatmap.h>
+#include <Kaleidoscope-Steno.h>
 
 enum {
        MACRO_PD_TILDE,
@@ -84,35 +86,27 @@ enum {
   *
   */
 
-enum { PDVORAK, NUMPAD, FUNCTION, FUNCTION2 }; // layers
+enum { PDVORAK, NUMPAD, FUNCTION, STENO }; // layers
 
-
-/* This comment temporarily turns off astyle's indent enforcement
- *   so we can make the keymaps actually resemble the physical key layout better
- */
 // *INDENT-OFF*
-
 KEYMAPS(
-  // No key yet:@
   [PDVORAK] = KEYMAP_STACKED
-  // (LSHIFT(Key_4), LSHIFT(Key_7),   Key_LeftBracket, LSHIFT(Key_LeftBracket), LSHIFT(Key_RightBracket), LSHIFT(Key_9), Key_LEDEffectNext,
-   (M(MACRO_PD_TILDE), M(MACRO_PD_ONE), M(MACRO_PD_TWO), M(MACRO_PD_THREE), M(MACRO_PD_FOUR), M(MACRO_PD_FIVE), ___,
-   ___,             Key_Semicolon,   Key_Comma,               Key_Period,               Key_P,         Key_Y,      ___,
-   ___,   Key_A,           Key_O,                   Key_E,                    Key_U,         Key_I,
+  (M(MACRO_PD_TILDE), M(MACRO_PD_ONE), M(MACRO_PD_TWO), M(MACRO_PD_THREE), M(MACRO_PD_FOUR), M(MACRO_PD_FIVE),     Key_PrintScreen,
+   Key_Delete,      Key_Semicolon,   Key_Comma,               Key_Period,               Key_P,         Key_Y,      M(MACRO_PD_PLUS),
+   Key_CapsLock,    Key_A,           Key_O,                   Key_E,                    Key_U,         Key_I,
    Key_Backslash,   Key_Quote,       Key_Q,                   Key_J,                    Key_K,         Key_X,      Key_Escape,
-   Key_LeftShift,   Key_Backspace,   Key_Tab,                 Key_LeftShift,
-   ShiftToLayer(FUNCTION),
+   Key_LeftShift,   Key_Backspace,   Key_Tab,                 Key_Home,
+   ShiftToLayer(NUMPAD),
 
-  //  M(MACRO_ANY),    Key_Equals,    LSHIFT(Key_8), LSHIFT(Key_0), LSHIFT(Key_Equals), Key_RightBracket, LSHIFT(Key_1), LSHIFT(Key_3),
-   ___, M(MACRO_PD_SIX), M(MACRO_PD_SEVEN), M(MACRO_PD_EIGHT), M(MACRO_PD_NINE), M(MACRO_PD_ZERO), M(MACRO_PD_MINUS),
-   LockLayer(NUMPAD),       Key_F,         Key_G,         Key_C,              Key_R,            Key_L,         Key_Slash,
-                    Key_D,         Key_H,         Key_T,              Key_N,            Key_S,         Key_Minus,
-   Key_RightAlt,    Key_B,         Key_M,         Key_W,              Key_V,            Key_Z,         ___,
-   Key_LeftControl, Key_Enter,     Key_Spacebar,  Key_LeftControl,
-   ShiftToLayer(FUNCTION2)),
+   LockLayer(STENO),          M(MACRO_PD_SIX), M(MACRO_PD_SEVEN), M(MACRO_PD_EIGHT), M(MACRO_PD_NINE), M(MACRO_PD_ZERO), M(MACRO_PD_MINUS),
+   M(MACRO_PD_CLOSE_BRACKET), Key_F,           Key_G,            Key_C,              Key_R,            Key_L,         Key_Slash,
+                              Key_D,           Key_H,            Key_T,              Key_N,            Key_S,         Key_Minus,
+   Key_RightAlt,              Key_B,           Key_M,            Key_W,              Key_V,            Key_Z,         Key_LeftAlt,
+   Key_End,         Key_Enter,       Key_Spacebar,     Key_LeftControl,
+   LockLayer(FUNCTION)),
 
   [NUMPAD] =  KEYMAP_STACKED
-  (___, ___, ___, ___, ___, ___, ___,
+  (Key_LEDEffectNext, ___, ___, ___, ___, ___, ___,
    ___, ___, ___, ___, ___, ___, ___,
    ___, ___, ___, ___, ___, ___,
    ___, ___, ___, ___, ___, ___, ___,
@@ -127,37 +121,37 @@ KEYMAPS(
    ___),
 
   [FUNCTION] =  KEYMAP_STACKED
-  (___,      Key_F1,           Key_F2,      Key_F3,     Key_F4,        Key_F5,           Key_CapsLock,
-   Key_Tab,  ___,              Key_mouseUp, ___,        Key_mouseBtnR, Key_mouseWarpEnd, Key_mouseWarpNE,
-   Key_Home, Key_mouseL,       Key_mouseDn, Key_mouseR, Key_mouseBtnL, Key_mouseWarpNW,
-   Key_End,  Key_PrintScreen,  Key_Insert,  ___,        Key_mouseBtnM, Key_mouseWarpSW,  Key_mouseWarpSE,
-   ___, Key_Delete, ___, ___,
+  (___,      Key_F1,           Key_F2,      Key_F3,        Key_F4,        Key_F5,           Key_CapsLock,
+   ___,      ___,              Key_mouseUp, ___,           Key_mouseBtnR, Key_mouseWarpEnd, Key_mouseWarpNE,
+   Key_Home, Key_mouseL,       Key_mouseDn, Key_mouseR,    Key_mouseBtnL, Key_mouseWarpNW,
+   Key_End,  Key_PrintScreen,  Key_Insert,  Key_DownArrow, Key_UpArrow,   Key_mouseWarpSW,  Key_mouseWarpSE,
+   ___,      ___,              ___,         ___,
+   LSHIFT(Key_LeftControl),
+
+   Consumer_ScanPreviousTrack, Key_F6,                 Key_F7,                   Key_F8,                   Key_F9,          Key_F10,          ___,
+   Consumer_PlaySlashPause,    Consumer_ScanNextTrack, Key_LeftCurlyBracket,     Key_RightCurlyBracket,    Key_RightArrow, Key_RightArrow, Key_F11,
+                               ___,                    Key_LeftArrow,            ___,            ___,     ___,   Key_F12,
+   Key_PcApplication,          Consumer_Mute,          Consumer_VolumeDecrement, Consumer_VolumeIncrement, ___,             Key_Backslash,    Key_Pipe,
+   ___,                        ___,                    ___,                ___,
+   UnlockLayer(FUNCTION)),
+
+  [STENO] =  KEYMAP_STACKED
+  (UnlockLayer(STENO),    XXX,   XXX,   XXX,   XXX,   XXX,   S(N6),
+   XXX,    S(N1), S(N2), S(N3), S(N4), S(N5), S(ST1),
+   S(FN),  S(S1), S(TL), S(PL), S(HL), S(ST1),
+   S(PWR), S(S2), S(KL), S(WL), S(RL), S(ST2), S(ST2),
+
+   S(RE1), XXX, S(A), S(O),
    ___,
 
-   Consumer_ScanPreviousTrack, Key_F6,                 Key_F7,                   Key_F8,                   Key_F9,          Key_F10,          Key_F11,
-   Consumer_PlaySlashPause,    Consumer_ScanNextTrack, Key_LeftCurlyBracket,     Key_RightCurlyBracket,    Key_LeftBracket, Key_RightBracket, Key_F12,
-                               Key_LeftArrow,          Key_DownArrow,            Key_UpArrow,              Key_RightArrow,  ___,              ___,
-   Key_PcApplication,          Consumer_Mute,          Consumer_VolumeDecrement, Consumer_VolumeIncrement, ___,             Key_Backslash,    Key_Pipe,
-   ___, ___, Key_Enter, ___,
-   ___),
+   S(N7),  XXX,    XXX,   XXX,   XXX,   XXX,   XXX,
+   S(ST3), S(N8),  S(N9), S(NA), S(NB), S(NC), XXX,
+           S(ST3), S(FR), S(PR), S(LR), S(TR), S(DR),
+   S(ST4), S(ST4), S(RR), S(BR), S(GR), S(SR), S(ZR),
 
-  [FUNCTION2] =  KEYMAP_STACKED
-  (___,      Key_F1,           Key_F2,      Key_F3,     Key_F4,        Key_F5,           Key_CapsLock,
-   Key_Tab,  ___,              Key_mouseUp, ___,        Key_mouseBtnR, Key_mouseWarpEnd, Key_mouseWarpNE,
-   Key_Home, Key_mouseL,       Key_mouseDn, Key_mouseR, Key_mouseBtnL, Key_mouseWarpNW,
-   Key_End,  Key_PrintScreen,  Key_Insert,  ___,        Key_mouseBtnM, Key_mouseWarpSW,  Key_mouseWarpSE,
-   ___, Key_Delete, ___, ___,
-   ___,
-
-   Consumer_ScanPreviousTrack, Key_F6,                 Key_F7,                   Key_F8,                   Key_F9,          Key_F10,          Key_F11,
-   Consumer_PlaySlashPause,    Consumer_ScanNextTrack, Key_LeftCurlyBracket,     Key_RightCurlyBracket,    Key_LeftBracket, Key_RightBracket, Key_F12,
-                               ___,                    Key_LeftArrow,          Key_DownArrow,            Key_UpArrow,              Key_RightArrow,                ___,
-   Key_PcApplication,          Consumer_Mute,          Consumer_VolumeDecrement, Consumer_VolumeIncrement, ___,             Key_Backslash,    Key_Pipe,
-   ___, ___, Key_Enter, ___,
+   S(E), S(U), XXX, S(RE2),
    ___)
 ) // KEYMAPS(
-
-/* Re-enable astyle's indent enforcement */
 // *INDENT-ON*
 
 static const kaleidoscope::ShapeShifter::dictionary_t shape_shift_dictionary[] PROGMEM = {
@@ -237,6 +231,16 @@ void toggleLedsOnSuspendResume(kaleidoscope::plugin::HostPowerManagement::Event 
   }
 }
 
+/** The config for the heatmak colours
+ * 
+ */
+static const cRGB heat_colors[] PROGMEM = {
+  {  0,   0,   0}, // black
+  { 25,  25, 255},  // red
+  {255,  25,  25}, // blue
+  { 25, 255,  25} // green
+};
+
 /** hostPowerManagementEventHandler dispatches power management events (suspend,
  * resume, and sleep) to other functions that perform action based on these
  * events.
@@ -302,12 +306,15 @@ KALEIDOSCOPE_INIT_PLUGINS(
   // keyboard is first connected
   BootGreetingEffect,
 
-  // The hardware test mode, which can be invoked by tapping Prog, LED and the
-  // left Fn button at the same time.
-  TestMode,
+  // // The hardware test mode, which can be invoked by tapping Prog, LED and the
+  // // left Fn button at the same time.
+  // TestMode,
 
   // LEDControl provides support for other LED modes
   LEDControl,
+
+  // Show which keys you use most
+  HeatmapEffect,
 
   // We start with the LED effect that turns off all the LEDs.
   LEDOff,
@@ -342,7 +349,8 @@ KALEIDOSCOPE_INIT_PLUGINS(
 
 
 
-  ShapeShifter
+  ShapeShifter,
+  GeminiPR
 );
 
 /** The 'setup' function is one of the two standard Arduino sketch functions.
@@ -350,6 +358,9 @@ KALEIDOSCOPE_INIT_PLUGINS(
  * Kaleidoscope and any plugins.
  */
 void setup() {
+  HeatmapEffect.heat_colors = heat_colors;
+  HeatmapEffect.heat_colors_length = 4;
+
   QUKEYS(
     kaleidoscope::Qukey(0, 2, 1, Key_LeftGui),      // A/cmd
     kaleidoscope::Qukey(0, 2, 2, Key_LeftAlt),      // S/alt
@@ -363,30 +374,19 @@ void setup() {
   Qukeys.setTimeout(200);
   Qukeys.setReleaseDelay(20);
 
-  // First, call Kaleidoscope's internal setup function
-  Kaleidoscope.setup();
+  Serial.begin(9600);
+
+  // First, call Kaleidoscope's internal setup function~~  Kaleidoscope.setup();
 
   // While we hope to improve this in the future, the NumPad plugin
   // needs to be explicitly told which keymap layer is your numpad layer
   NumPad.numPadLayer = NUMPAD;
 
-  // // We configure the AlphaSquare effect to use RED letters
-  // AlphaSquare.color = CRGB(255, 0, 0);
-
-  // // We set the brightness of the rainbow effects to 150 (on a scale of 0-255)
-  // // This draws more than 500mA, but looks much nicer than a dimmer effect
-  // LEDRainbowEffect.brightness(150);
-  // LEDRainbowWaveEffect.brightness(150);
-
-  // // The LED Stalker mode has a few effects. The one we like is called
-  // // 'BlazingTrail'. For details on other options, see
-  // // https://github.com/keyboardio/Kaleidoscope/blob/master/doc/plugin/LED-Stalker.md
-  // StalkerEffect.variant = STALKER(BlazingTrail);
-
   // We want to make sure that the firmware starts with LED effects off
   // This avoids over-taxing devices that don't have a lot of power to share
   // with USB devices
-  LEDOff.activate();
+  // LEDOff.activate();
+  HeatmapEffect.activate();
 
   // To make the keymap editable without flashing new firmware, we store
   // additional layers in EEPROM. For now, we reserve space for five layers. If
@@ -401,9 +401,11 @@ void setup() {
   ColormapEffect.max_layers(5);
 
 
+
   // Own Libs:
 
   ShapeShifter.dictionary = shape_shift_dictionary;
+
 }
 
 /** loop is the second of the standard Arduino sketch functions.
