@@ -57,7 +57,7 @@
 // Non default plugins:
 // #include <Kaleidoscope-ModifierLayers.h> # keep this here as a reminder since nicer than shapeshift IMO (but was buggy)
 #include <Kaleidoscope-ShapeShifter.h>
-#include <Kaleidoscope-Qukeys.h>
+// #include <Kaleidoscope-Qukeys.h>
 
 enum {
        MACRO_PD_TILDE,
@@ -84,7 +84,7 @@ enum {
   *
   */
 
-enum { PDVORAK, NUMPAD, FUNCTION, FUNCTION2 }; // layers
+enum { PDVORAK, NUMPAD, FUNCTION }; // layers
 
 
 /* This comment temporarily turns off astyle's indent enforcement
@@ -93,23 +93,23 @@ enum { PDVORAK, NUMPAD, FUNCTION, FUNCTION2 }; // layers
 // *INDENT-OFF*
 
 KEYMAPS(
-  // No key yet:@
+  // No key yet:`
   [PDVORAK] = KEYMAP_STACKED
   // (LSHIFT(Key_4), LSHIFT(Key_7),   Key_LeftBracket, LSHIFT(Key_LeftBracket), LSHIFT(Key_RightBracket), LSHIFT(Key_9), Key_LEDEffectNext,
    (M(MACRO_PD_TILDE), M(MACRO_PD_ONE), M(MACRO_PD_TWO), M(MACRO_PD_THREE), M(MACRO_PD_FOUR), M(MACRO_PD_FIVE), ___,
    ___,             Key_Semicolon,   Key_Comma,               Key_Period,               Key_P,         Key_Y,      ___,
    ___,   Key_A,           Key_O,                   Key_E,                    Key_U,         Key_I,
    Key_Backslash,   Key_Quote,       Key_Q,                   Key_J,                    Key_K,         Key_X,      Key_Escape,
-   Key_LeftShift,   Key_Backspace,   Key_Tab,                 Key_LeftShift,
-   ShiftToLayer(FUNCTION),
+   Key_Backspace,   Key_Tab,         Key_LeftControl, Key_LeftAlt,
+   ShiftToLayer(NUMPAD),
 
   //  M(MACRO_ANY),    Key_Equals,    LSHIFT(Key_8), LSHIFT(Key_0), LSHIFT(Key_Equals), Key_RightBracket, LSHIFT(Key_1), LSHIFT(Key_3),
-   ___, M(MACRO_PD_SIX), M(MACRO_PD_SEVEN), M(MACRO_PD_EIGHT), M(MACRO_PD_NINE), M(MACRO_PD_ZERO), M(MACRO_PD_MINUS),
+   Key_Backtick, M(MACRO_PD_SIX), M(MACRO_PD_SEVEN), M(MACRO_PD_EIGHT), M(MACRO_PD_NINE), M(MACRO_PD_ZERO), M(MACRO_PD_MINUS),
    LockLayer(NUMPAD),       Key_F,         Key_G,         Key_C,              Key_R,            Key_L,         Key_Slash,
                     Key_D,         Key_H,         Key_T,              Key_N,            Key_S,         Key_Minus,
    Key_RightAlt,    Key_B,         Key_M,         Key_W,              Key_V,            Key_Z,         ___,
-   Key_LeftControl, Key_Enter,     Key_Spacebar,  Key_LeftControl,
-   ShiftToLayer(FUNCTION2)),
+   Key_Enter,     Key_Spacebar,  Key_LeftShift, Key_LeftGui,
+   ShiftToLayer(FUNCTION)),
 
   [NUMPAD] =  KEYMAP_STACKED
   (___, ___, ___, ___, ___, ___, ___,
@@ -139,22 +139,8 @@ KEYMAPS(
                                Key_LeftArrow,          Key_DownArrow,            Key_UpArrow,              Key_RightArrow,  ___,              ___,
    Key_PcApplication,          Consumer_Mute,          Consumer_VolumeDecrement, Consumer_VolumeIncrement, ___,             Key_Backslash,    Key_Pipe,
    ___, ___, Key_Enter, ___,
-   ___),
-
-  [FUNCTION2] =  KEYMAP_STACKED
-  (___,      Key_F1,           Key_F2,      Key_F3,     Key_F4,        Key_F5,           Key_CapsLock,
-   Key_Tab,  ___,              Key_mouseUp, ___,        Key_mouseBtnR, Key_mouseWarpEnd, Key_mouseWarpNE,
-   Key_Home, Key_mouseL,       Key_mouseDn, Key_mouseR, Key_mouseBtnL, Key_mouseWarpNW,
-   Key_End,  Key_PrintScreen,  Key_Insert,  ___,        Key_mouseBtnM, Key_mouseWarpSW,  Key_mouseWarpSE,
-   ___, Key_Delete, ___, ___,
-   ___,
-
-   Consumer_ScanPreviousTrack, Key_F6,                 Key_F7,                   Key_F8,                   Key_F9,          Key_F10,          Key_F11,
-   Consumer_PlaySlashPause,    Consumer_ScanNextTrack, Key_LeftCurlyBracket,     Key_RightCurlyBracket,    Key_LeftBracket, Key_RightBracket, Key_F12,
-                               ___,                    Key_LeftArrow,          Key_DownArrow,            Key_UpArrow,              Key_RightArrow,                ___,
-   Key_PcApplication,          Consumer_Mute,          Consumer_VolumeDecrement, Consumer_VolumeIncrement, ___,             Key_Backslash,    Key_Pipe,
-   ___, ___, Key_Enter, ___,
    ___)
+
 ) // KEYMAPS(
 
 /* Re-enable astyle's indent enforcement */
@@ -283,7 +269,7 @@ KALEIDOSCOPE_INIT_PLUGINS(
   EEPROMSettings,
   EEPROMKeymap,
   
-  Qukeys,
+  // Qukeys,
 
   // Focus allows bi-directional communication with the host, and is the
   // interface through which the keymap in EEPROM can be edited.
@@ -350,18 +336,18 @@ KALEIDOSCOPE_INIT_PLUGINS(
  * Kaleidoscope and any plugins.
  */
 void setup() {
-  QUKEYS(
-    kaleidoscope::Qukey(0, 2, 1, Key_LeftGui),      // A/cmd
-    kaleidoscope::Qukey(0, 2, 2, Key_LeftAlt),      // S/alt
-    kaleidoscope::Qukey(0, 2, 3, Key_LeftShift),    // F/shift
-    kaleidoscope::Qukey(0, 2, 4, Key_LeftControl),  // D/ctrl
-    kaleidoscope::Qukey(0, 2, 14, Key_LeftGui),      // A/cmd
-    kaleidoscope::Qukey(0, 2, 13, Key_LeftAlt),      // S/alt
-    kaleidoscope::Qukey(0, 2, 12, Key_LeftShift),    // F/shift
-    kaleidoscope::Qukey(0, 2, 11, Key_LeftControl)  // D/ctrl
-  )
-  Qukeys.setTimeout(200);
-  Qukeys.setReleaseDelay(20);
+  // QUKEYS(
+  //   kaleidoscope::Qukey(0, 2, 1, Key_LeftGui),      // A/cmd
+  //   kaleidoscope::Qukey(0, 2, 2, Key_LeftAlt),      // S/alt
+  //   kaleidoscope::Qukey(0, 2, 3, Key_LeftShift),    // F/shift
+  //   kaleidoscope::Qukey(0, 2, 4, Key_LeftControl),  // D/ctrl
+  //   kaleidoscope::Qukey(0, 2, 14, Key_LeftGui),      // A/cmd
+  //   kaleidoscope::Qukey(0, 2, 13, Key_LeftAlt),      // S/alt
+  //   kaleidoscope::Qukey(0, 2, 12, Key_LeftShift),    // F/shift
+  //   kaleidoscope::Qukey(0, 2, 11, Key_LeftControl)  // D/ctrl
+  // )
+  // Qukeys.setTimeout(200);
+  // Qukeys.setReleaseDelay(20);
 
   // First, call Kaleidoscope's internal setup function
   Kaleidoscope.setup();
