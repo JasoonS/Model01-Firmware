@@ -95,20 +95,23 @@ KEYMAPS(
    Key_Delete,      Key_Semicolon,   Key_Comma,               Key_Period,               Key_P,         Key_Y,      M(MACRO_PD_PLUS),
    Key_CapsLock,    Key_A,           Key_O,                   Key_E,                    Key_U,         Key_I,
    Key_Backslash,   Key_Quote,       Key_Q,                   Key_J,                    Key_K,         Key_X,      Key_Escape,
-   Key_Backspace,   Key_Tab,         Key_LeftControl, Key_LeftAlt,
-   ShiftToLayer(NUMPAD),
+   Key_Tab,         Key_Backspace,   Key_LeftShift, Key_LeftGui,
+  //  Key_A,         Key_B,   Key_C, Key_D,
+  //  ShiftToLayer(NUMPAD),
+   Key_X,
 
-   LockLayer(STENO),          M(MACRO_PD_SIX), M(MACRO_PD_SEVEN), M(MACRO_PD_EIGHT), M(MACRO_PD_NINE), M(MACRO_PD_ZERO), M(MACRO_PD_MINUS),
+   Key_Backtick,          M(MACRO_PD_SIX), M(MACRO_PD_SEVEN), M(MACRO_PD_EIGHT), M(MACRO_PD_NINE), M(MACRO_PD_ZERO), M(MACRO_PD_MINUS),
    M(MACRO_PD_CLOSE_BRACKET), Key_F,           Key_G,            Key_C,              Key_R,            Key_L,         Key_Slash,
                               Key_D,           Key_H,            Key_T,              Key_N,            Key_S,         Key_Minus,
    Key_RightAlt,              Key_B,           Key_M,            Key_W,              Key_V,            Key_Z,         Key_LeftAlt,
-   LockLayer(FUNCTION)),
-   Key_Enter,     Key_Spacebar,  Key_LeftShift, Key_LeftGui,
+  //  Key_E,         Key_F,   Key_G, Key_H,
+   Key_LeftAlt, Key_LeftControl, Key_Spacebar, Key_Enter, 
+   ShiftToLayer(FUNCTION)),
 
   [NUMPAD] =  KEYMAP_STACKED
   (Key_LEDEffectNext, ___, ___, ___, ___, ___, ___,
    ___, ___, ___, ___, ___, ___, ___,
-   ___, ___, ___, ___, ___, ___,
+   ___, ___, ___, ___, Key_Backtick, ___,
    ___, ___, ___, ___, ___, ___, ___,
    ___, ___, ___, ___,
    ___,
@@ -125,14 +128,14 @@ KEYMAPS(
    ___,      ___,              Key_mouseUp, ___,           Key_mouseBtnR, Key_mouseWarpEnd, Key_mouseWarpNE,
    Key_Home, Key_mouseL,       Key_mouseDn, Key_mouseR,    Key_mouseBtnL, Key_mouseWarpNW,
    Key_End,  Key_PrintScreen,  Key_Insert,  Key_DownArrow, Key_UpArrow,   Key_mouseWarpSW,  Key_mouseWarpSE,
-   ___,      ___,              ___,         ___,
-   LSHIFT(Key_LeftControl),
+   Key_DownArrow, Key_UpArrow, ___,      ___,
+   ___,
 
    Consumer_ScanPreviousTrack, Key_F6,                 Key_F7,                   Key_F8,                   Key_F9,          Key_F10,          ___,
    Consumer_PlaySlashPause,    Consumer_ScanNextTrack, Key_LeftCurlyBracket,     Key_RightCurlyBracket,    Key_RightArrow, Key_RightArrow, Key_F11,
                                ___,                    Key_LeftArrow,            ___,            ___,     ___,   Key_F12,
    Key_PcApplication,          Consumer_Mute,          Consumer_VolumeDecrement, Consumer_VolumeIncrement, ___,             Key_Backslash,    Key_Pipe,
-   ___, ___, Key_Enter, ___,
+   ___, ___, Key_LeftArrow, Key_RightArrow,
    ___)
 
 ) // KEYMAPS(
@@ -245,17 +248,12 @@ enum {
   // mode.
   COMBO_TOGGLE_NKRO_MODE
 };
-
-/** A tiny wrapper, to be used by MagicCombo.
- * This simply toggles the keyboard protocol via USBQuirks, and wraps it within
- * a function with an unused argument, to match what MagicCombo expects.
- */
-static void toggleKeyboardProtocol(uint8_t combo_index) {
+void toggleKeyboardProtocol(uint8_t combo_index) {
   USBQuirks.toggleKeyboardProtocol();
 }
 
 /** Magic combo list, a list of key combo and action pairs the firmware should
- * recognise.
+//  * recognise.
  */
 USE_MAGIC_COMBOS({.action = toggleKeyboardProtocol,
                   // Left Fn + Esc + Shift
@@ -333,8 +331,8 @@ KALEIDOSCOPE_INIT_PLUGINS(
 
 
 
-  ShapeShifter,
-  GeminiPR
+  ShapeShifter
+  // GeminiPR
 );
 
 /** The 'setup' function is one of the two standard Arduino sketch functions.
@@ -345,18 +343,18 @@ void setup() {
   HeatmapEffect.heat_colors = heat_colors;
   HeatmapEffect.heat_colors_length = 4;
 
-  QUKEYS(
-    kaleidoscope::Qukey(0, 2, 1, Key_LeftGui),      // A/cmd
-    kaleidoscope::Qukey(0, 2, 2, Key_LeftAlt),      // S/alt
-    kaleidoscope::Qukey(0, 2, 3, Key_LeftShift),    // F/shift
-    kaleidoscope::Qukey(0, 2, 4, Key_LeftControl),  // D/ctrl
-    kaleidoscope::Qukey(0, 2, 14, Key_LeftGui),      // A/cmd
-    kaleidoscope::Qukey(0, 2, 13, Key_LeftAlt),      // S/alt
-    kaleidoscope::Qukey(0, 2, 12, Key_LeftShift),    // F/shift
-    kaleidoscope::Qukey(0, 2, 11, Key_LeftControl)  // D/ctrl
-  )
-  Qukeys.setTimeout(200);
-  Qukeys.setReleaseDelay(20);
+  // QUKEYS(
+  //   kaleidoscope::Qukey(0, 2, 1, Key_LeftGui),      // A/cmd
+  //   kaleidoscope::Qukey(0, 2, 2, Key_LeftAlt),      // S/alt
+  //   kaleidoscope::Qukey(0, 2, 3, Key_LeftShift),    // F/shift
+  //   kaleidoscope::Qukey(0, 2, 4, Key_LeftControl),  // D/ctrl
+  //   kaleidoscope::Qukey(0, 2, 14, Key_LeftGui),      // A/cmd
+  //   kaleidoscope::Qukey(0, 2, 13, Key_LeftAlt),      // S/alt
+  //   kaleidoscope::Qukey(0, 2, 12, Key_LeftShift),    // F/shift
+  //   kaleidoscope::Qukey(0, 2, 11, Key_LeftControl)  // D/ctrl
+  // )
+  // Qukeys.setTimeout(200);
+  // Qukeys.setReleaseDelay(20);
 
   Serial.begin(9600);
 
@@ -388,7 +386,7 @@ void setup() {
 
   // Own Libs:
 
-  ShapeShifter.dictionary = shape_shift_dictionary;
+  // ShapeShifter.dictionary = shape_shift_dictionary;
 
 }
 
