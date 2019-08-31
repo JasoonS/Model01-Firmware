@@ -179,17 +179,17 @@ KEYMAPS(
    ___, ___, ___, ___,
    ___,
 
-   ___,  ___, Key_Keypad7, Key_Keypad8,   Key_Keypad9,        Key_KeypadSubtract, ___,
-   ___,  ___, Key_Keypad4, Key_Keypad5,   Key_Keypad6,        Key_KeypadAdd,      ___,
-         ___, Key_Keypad1, Key_Keypad2,   Key_Keypad3,        Key_Equals,         ___,
-   ___,  ___, Key_Keypad0, Key_KeypadDot, Key_KeypadMultiply, Key_KeypadDivide,   Key_Enter,
+   ___,  ___, Key_0, Key_KeypadAdd, Key_KeypadMultiply, Key_KeypadDivide,   Key_Enter,
+   ___,  ___, Key_1, Key_2,   Key_3,        Key_KeypadSubtract,         ___,
+         ___, Key_4, Key_5,   Key_6,        Key_0,      ___,
+   ___,  ___, Key_7, Key_8,   Key_9,        Key_KeypadDot, ___,
    ___,  ___, ___, ___,
    ___),
 
   [FUNCTION] =  KEYMAP_STACKED
   (___,      Key_F1,           Key_F2,      Key_F3,        Key_F4,        Key_F5,           Key_CapsLock,
    ___,      ___,              Key_mouseUp, ___,           Key_mouseBtnR, Key_mouseWarpEnd, Key_mouseWarpNE,
-   Key_Home, Key_mouseL,       Key_LeftArrow, Key_RightArrow,/*Key_mouseDn, Key_mouseR,*/    Key_mouseBtnL, Key_mouseWarpNW,
+   Key_Home, Key_mouseL,       Key_mouseDn, Key_LeftArrow, Key_RightArrow,/* Key_mouseR,    Key_mouseBtnL,*/ Key_mouseWarpNW,
    Key_End,  Key_PrintScreen,  Key_Insert,  Key_DownArrow, Key_UpArrow,   Key_mouseWarpSW,  Key_mouseWarpSE,
    Key_DownArrow, Key_UpArrow, ___,      ___,
    ___,
@@ -280,18 +280,18 @@ static void versionInfoMacro(uint8_t keyState) {
  * keypress event repeating that randomly selected key.
  *
  */
-~
+
 // These 'solid' color effect definitions define a rainbow of
 // LED color modes calibrated to draw 500mA or less on the
 // Keyboardio Model 01.
 
-static kaleidoscope::LEDSolidColor solidRed(160, 0, 0);
-static kaleidoscope::LEDSolidColor solidOrange(140, 70, 0);
-static kaleidoscope::LEDSolidColor solidYellow(130, 100, 0);
-static kaleidoscope::LEDSolidColor solidGreen(0, 160, 0);
-static kaleidoscope::LEDSolidColor solidBlue(0, 70, 130);
-static kaleidoscope::LEDSolidColor solidIndigo(0, 0, 170);
-static kaleidoscope::LEDSolidColor solidViolet(130, 0, 120);
+// static kaleidoscope::LEDSolidColor solidRed(160, 0, 0);
+// static kaleidoscope::LEDSolidColor solidOrange(140, 70, 0);
+// static kaleidoscope::LEDSolidColor solidYellow(130, 100, 0);
+// static kaleidoscope::LEDSolidColor solidGreen(0, 160, 0);
+// static kaleidoscope::LEDSolidColor solidBlue(0, 70, 130);
+// static kaleidoscope::LEDSolidColor solidIndigo(0, 0, 170);
+// static kaleidoscope::LEDSolidColor solidViolet(130, 0, 120);
 
 /** toggleLedsOnSuspendResume toggles the LEDs off when the host goes to sleep,
  * and turns them back on when it wakes up.
@@ -398,14 +398,14 @@ KALEIDOSCOPE_INIT_PLUGINS(
   LEDChaseEffect,
 
   // These static effects turn your keyboard's LEDs a variety of colors
-  solidRed, solidOrange, solidYellow, solidGreen, solidBlue, solidIndigo, solidViolet,
+  // solidRed, solidOrange, solidYellow, solidGreen, solidBlue, solidIndigo, solidViolet,
 
   // The breathe effect slowly pulses all of the LEDs on your keyboard
   LEDBreatheEffect,
 
-  // The AlphaSquare effect prints each character you type, using your
-  // keyboard's LEDs as a display
-  AlphaSquareEffect,
+  // // The AlphaSquare effect prints each character you type, using your
+  // // keyboard's LEDs as a display
+  // AlphaSquareEffect,
 
   // The stalker effect lights up the keys you've pressed recently
   StalkerEffect,
