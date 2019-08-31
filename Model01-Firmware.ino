@@ -2,9 +2,9 @@
 // Copyright 2016 Keyboardio, inc. <jesse@keyboard.io>
 // See "LICENSE" for license details
 
-#ifndef BUILD_INFORMATION
-#define BUILD_INFORMATION "locally built"
-#endif
+// #ifndef BUILD_INFORMATION
+// #define BUILD_INFORMATION "locally built"
+// #endif
 
 
 /**
@@ -58,13 +58,14 @@
 #include "Kaleidoscope-LED-AlphaSquare.h"
 
 // Support for Keyboardio's internal keyboard testing mode
-#include "Kaleidoscope-HardwareTestMode.h"
+// #include "Kaleidoscope-HardwareTestMode.h"
+// #include "Kaleidoscope-Model01-TestMode.h"
 
 // Support for host power management (suspend & wakeup)
 #include "Kaleidoscope-HostPowerManagement.h"
 
-// Support for magic combos (key chords that trigger an action)
-#include "Kaleidoscope-MagicCombo.h"
+// // Support for magic combos (key chords that trigger an action)
+// #include "Kaleidoscope-MagicCombo.h"
 
 // Support for USB quirks, like changing the key state report protocol
 #include "Kaleidoscope-USB-Quirks.h"
@@ -157,17 +158,17 @@ enum { PDVORAK, NUMPAD, FUNCTION };
 
 KEYMAPS(
   [PDVORAK] = KEYMAP_STACKED
-  (M(MACRO_PD_TILDE), M(MACRO_PD_ONE), M(MACRO_PD_TWO), M(MACRO_PD_THREE), M(MACRO_PD_FOUR), M(MACRO_PD_FIVE),     Key_PrintScreen,
+  (LSHIFT(Key_4),   LSHIFT(Key_7), M(MACRO_PD_TWO), M(MACRO_PD_THREE), M(MACRO_PD_FOUR), Key_LeftParen,     Key_PrintScreen,
    Key_Delete,      Key_Semicolon,   Key_Comma,               Key_Period,               Key_P,         Key_Y,      M(MACRO_PD_PLUS),
    Key_CapsLock,    Key_A,           Key_O,                   Key_E,                    Key_U,         Key_I,
    Key_Backslash,   Key_Quote,       Key_Q,                   Key_J,                    Key_K,         Key_X,      Key_Escape,
    Key_Tab,         Key_Backspace,   Key_LeftShift, Key_LeftGui,
    ShiftToLayer(NUMPAD),
 
-   Key_Backtick,          M(MACRO_PD_SIX), M(MACRO_PD_SEVEN), M(MACRO_PD_EIGHT), M(MACRO_PD_NINE), M(MACRO_PD_ZERO), M(MACRO_PD_MINUS),
-   M(MACRO_PD_CLOSE_BRACKET), Key_F,           Key_G,            Key_C,              Key_R,            Key_L,         Key_Slash,
-                              Key_D,           Key_H,            Key_T,              Key_N,            Key_S,         Key_Minus,
-   Key_RightAlt,              Key_B,           Key_M,            Key_W,              Key_V,            Key_Z,         Key_LeftAlt,
+   ___,                       Key_Equals,      M(MACRO_PD_SEVEN), M(MACRO_PD_EIGHT), M(MACRO_PD_NINE), Key_RSquareBracket, LSHIFT(Key_1),
+   M(MACRO_PD_CLOSE_BRACKET), Key_F,           Key_G,             Key_C,             Key_R,            Key_L,              Key_Slash,
+                              Key_D,           Key_H,             Key_T,             Key_N,            Key_S,              Key_Minus,
+   Key_RightAlt,              Key_B,           Key_M,             Key_W,             Key_V,            Key_Z,              Key_LeftAlt,
    Key_LeftAlt, Key_LeftControl, Key_Spacebar, Key_Enter, 
    ShiftToLayer(FUNCTION)),
 
@@ -179,11 +180,11 @@ KEYMAPS(
    ___, ___, ___, ___,
    ___,
 
-   ___,  ___, Key_0, Key_KeypadAdd, Key_KeypadMultiply, Key_KeypadDivide,   Key_Enter,
-   ___,  ___, Key_1, Key_2,   Key_3,        Key_KeypadSubtract,         ___,
-         ___, Key_4, Key_5,   Key_6,        Key_0,      ___,
-   ___,  ___, Key_7, Key_8,   Key_9,        Key_KeypadDot, ___,
-   ___,  ___, ___, ___,
+   ___,  ___, Key_Insert, Key_KeypadAdd, Key_KeypadMultiply, Key_KeypadDivide,   Key_Enter,
+   ___,  ___, Key_1,      Key_2,         Key_3,              Key_KeypadSubtract, ___,
+         ___, Key_4,      Key_5,         Key_6,              Key_0,              ___,
+   ___,  ___, Key_7,      Key_8,         Key_9,              Key_KeypadDot,      ___,
+   ___,  ___, ___,        ___,
    ___),
 
   [FUNCTION] =  KEYMAP_STACKED
@@ -214,6 +215,13 @@ bool wasShiftActive() {
       ? Macros.type(PSTR(unShifted)) : MACRO_NONE\
 )
 
+#define MACROSHIFT_R(shifted, unShifted) (\
+  wasShiftActive()\
+  ? shifted\
+  : keyToggledOn(keyState) \
+      ? Macros.type(PSTR(unShifted)) : MACRO_NONE\
+)
+
 #define MACROSHIFT_SYMBOL(shifted, unShifted) (\
   wasShiftActive()\
   ? keyToggledOn(keyState) \
@@ -224,36 +232,35 @@ bool wasShiftActive() {
 
 const macro_t *macroAction(uint8_t macroIndex, uint8_t keyState) {
   switch (macroIndex) {
-    case MACRO_PD_TILDE:
-      return MACROSHIFT_SYMBOL("$", "~");
-    case MACRO_PD_ONE:
-      return MACROSHIFT_SYMBOL("&", "%");
+    // case MACRO_PD_TILDE:
+    //   return MACROSHIFT_SYMBOL("~", "$");
+    // case MACRO_PD_ONE:
+    //   return MACROSHIFT_SYMBOL("%", "&");
     case MACRO_PD_TWO:
-      return MACROSHIFT(7, "[");
+      return MACROSHIFT_R(MACRODOWN(Tr(Key_Backtick)), "[");
     case MACRO_PD_THREE:
-      return MACROSHIFT(5, "{");
+      return MACROSHIFT_SYMBOL("%", "{");
     case MACRO_PD_FOUR:
-      return MACROSHIFT(3, "}");
-    case MACRO_PD_FIVE:
-      return MACROSHIFT(1, "(");
-    case MACRO_PD_SIX:
-      return MACROSHIFT(9, "=");
+      return MACROSHIFT_SYMBOL("#", "}");
+    // case MACRO_PD_FIVE:
+    //   return MACROSHIFT_SYMBOL("%", "(");
+    // case MACRO_PD_SIX:
+    //   return MACROSHIFT(9, "=");
     case MACRO_PD_SEVEN:
-      return MACROSHIFT(0, "*");
+      return MACROSHIFT_R(MACRODOWN(U(LeftShift),Tr(Key_Backtick),D(LeftShift)), "*");
     case MACRO_PD_EIGHT:
-      return MACROSHIFT(2, ")");
+      return MACROSHIFT_SYMBOL("@", ")");
     case MACRO_PD_NINE:
-      return MACROSHIFT(4, "+");
-    case MACRO_PD_ZERO:
-      return MACROSHIFT(6, "]");
-    case MACRO_PD_MINUS:
-      return MACROSHIFT(8, "!");
+      return MACROSHIFT_SYMBOL("^", "+");
+    // case MACRO_PD_ZERO:
+    //   return MACROSHIFT(6, "]");
+    // case MACRO_PD_MINUS:
+    //   return MACROSHIFT(8, "!");
     case MACRO_PD_PLUS:
       return MACROSHIFT_SYMBOL("#", "`");
     case MACRO_PD_CLOSE_BRACKET:
       return MACROSHIFT_SYMBOL("@", "^");
   }
-
   return MACRO_NONE;
 }
 
@@ -266,12 +273,12 @@ const macro_t *macroAction(uint8_t macroIndex, uint8_t keyState) {
  *  prints out the firmware build information as virtual keystrokes
  */
 
-static void versionInfoMacro(uint8_t keyState) {
-  if (keyToggledOn(keyState)) {
-    Macros.type(PSTR("Keyboardio Model 01 - Kaleidoscope "));
-    Macros.type(PSTR(BUILD_INFORMATION));
-  }
-}
+// static void versionInfoMacro(uint8_t keyState) {
+//   if (keyToggledOn(keyState)) {
+//     Macros.type(PSTR("Keyboardio Model 01 - Kaleidoscope "));
+//     Macros.type(PSTR(BUILD_INFORMATION));
+//   }
+// }
 
 /** anyKeyMacro is used to provide the functionality of the 'Any' key.
  *
@@ -337,33 +344,33 @@ enum {
 
 /** Wrappers, to be used by MagicCombo. **/
 
-/**
- * This simply toggles the keyboard protocol via USBQuirks, and wraps it within
- * a function with an unused argument, to match what MagicCombo expects.
- */
-static void toggleKeyboardProtocol(uint8_t combo_index) {
-  USBQuirks.toggleKeyboardProtocol();
-}
+// /**
+//  * This simply toggles the keyboard protocol via USBQuirks, and wraps it within
+//  * a function with an unused argument, to match what MagicCombo expects.
+//  */
+// static void toggleKeyboardProtocol(uint8_t combo_index) {
+//   USBQuirks.toggleKeyboardProtocol();
+// }
 
-/**
- *  This enters the hardware test mode
- */
-static void enterHardwareTestMode(uint8_t combo_index) {
-  HardwareTestMode.runTests();
-}
+// /**
+//  *  This enters the hardware test mode
+//  */
+// static void enterHardwareTestMode(uint8_t combo_index) {
+//   HardwareTestMode.runTests();
+// }
 
 
-/** Magic combo list, a list of key combo and action pairs the firmware should
- * recognise.
- */
-USE_MAGIC_COMBOS({.action = toggleKeyboardProtocol,
-                  // Left Fn + Esc + Shift
-                  .keys = { R3C6, R2C6, R3C7 }
-}, {
-  .action = enterHardwareTestMode,
-  // Left Fn + Prog + LED
-  .keys = { R3C6, R0C0, R0C6 }
-});
+// /** Magic combo list, a list of key combo and action pairs the firmware should
+//  * recognise.
+//  */
+// USE_MAGIC_COMBOS({.action = toggleKeyboardProtocol,
+//                   // Left Fn + Esc + Shift
+//                   .keys = { R3C6, R2C6, R3C7 }
+// }, {
+//   .action = enterHardwareTestMode,
+//   // Left Fn + Prog + LED
+//   .keys = { R3C6, R0C0, R0C6 }
+// });
 
 // First, tell Kaleidoscope which plugins you want to use.
 // The order can be important. For example, LED effects are
@@ -391,9 +398,9 @@ KALEIDOSCOPE_INIT_PLUGINS(
   // keyboard is first connected
   BootGreetingEffect,
 
-  // The hardware test mode, which can be invoked by tapping Prog, LED and the
-  // left Fn button at the same time.
-  HardwareTestMode,
+  // // The hardware test mode, which can be invoked by tapping Prog, LED and the
+  // // left Fn button at the same time.
+  // HardwareTestMode,
 
   // LEDControl provides support for other LED modes
   LEDControl,
@@ -440,10 +447,10 @@ KALEIDOSCOPE_INIT_PLUGINS(
   // goes to sleep, and resume them when it wakes up.
   HostPowerManagement,
 
-  // The MagicCombo plugin lets you use key combinations to trigger custom
-  // actions - a bit like Macros, but triggered by pressing multiple keys at the
-  // same time.
-  MagicCombo,
+  // // The MagicCombo plugin lets you use key combinations to trigger custom
+  // // actions - a bit like Macros, but triggered by pressing multiple keys at the
+  // // same time.
+  // MagicCombo,
 
   // The USBQuirks plugin lets you do some things with USB that we aren't
   // comfortable - or able - to do automatically, but can be useful
@@ -472,8 +479,8 @@ void setup() {
   LEDRainbowEffect.brightness(150);
   LEDRainbowWaveEffect.brightness(150);
 
-  // Set the action key the test mode should listen for to Left Fn
-  HardwareTestMode.setActionKey(R3C6);
+  // // Set the action key the test mode should listen for to Left Fn
+  // HardwareTestMode.setActionKey(R3C6);
 
   // The LED Stalker mode has a few effects. The one we like is called
   // 'BlazingTrail'. For details on other options, see
